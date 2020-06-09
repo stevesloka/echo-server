@@ -10,6 +10,7 @@ import (
 var (
 	echoText      string
 	responseDelay time.Duration
+	listenPort    int
 	delay         <-chan time.Time
 )
 
@@ -31,11 +32,14 @@ func getRequest(w http.ResponseWriter, r *http.Request) {
 func init() {
 	flag.StringVar(&echoText, "echotext", "", "enter text to echo back to the user")
 	flag.DurationVar(&responseDelay, "response-delay", 0, "")
+	flag.IntVar(&listenPort, "listen-port", 8080, "The port used to listen on. Defaults to 8080")
 }
 
 func main() {
 	flag.Parse()
 	delay = time.Tick(responseDelay)
 	http.HandleFunc("/", getRequest)
-	http.ListenAndServe(":8080", nil)
+
+	fmt.Printf("Server started! Listening on port %q", fmt.Sprintf(":%d", listenPort))
+	http.ListenAndServe(fmt.Sprintf(":%d", listenPort), nil)
 }
