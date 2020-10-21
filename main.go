@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -21,8 +22,14 @@ func getRequest(w http.ResponseWriter, r *http.Request) {
 		<-delay
 	}
 
+	name, err := os.Hostname()
+	if err != nil {
+		fmt.Println("err: ", err)
+	}
+
 	w.Write([]byte(fmt.Sprintf("ECHO Request Server: \n--------------------\n")))
 	w.Write([]byte(fmt.Sprintf("App: \n    %s\n", echoText)))
+	w.Write([]byte(fmt.Sprintf("Host: \n    %s\n", name)))
 
 	headers := r.Header
 	w.Write([]byte(fmt.Sprintf("Request: \n    http://%s%s\n", r.Host, r.RequestURI)))
