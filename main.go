@@ -27,13 +27,16 @@ func getRequest(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("err: ", err)
 	}
 
-	w.Write([]byte(fmt.Sprintf("ECHO Request Server: \n--------------------\n")))
-	w.Write([]byte(fmt.Sprintf("App: \n    %s\n", echoText)))
-	w.Write([]byte(fmt.Sprintf("Host: \n    %s\n", name)))
+	outputText := fmt.Sprintf("ECHO Request Server: \n--------------------\n")
+	outputText += fmt.Sprintf("App: \n    %s\n", echoText)
+	outputText += fmt.Sprintf("Host: \n    %s\n", name)
 
 	headers := r.Header
-	w.Write([]byte(fmt.Sprintf("Request: \n    http://%s%s\n", r.Host, r.RequestURI)))
-	w.Write([]byte(fmt.Sprintf("Headers: \n    %s\n", headers)))
+	outputText += fmt.Sprintf("Request: \n    http://%s%s\n", r.Host, r.RequestURI)
+	outputText += fmt.Sprintf("Headers: \n    %s\n", headers)
+
+	w.Write([]byte(outputText))
+	fmt.Println(outputText)
 }
 
 func init() {
