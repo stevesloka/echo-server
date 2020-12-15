@@ -5,7 +5,7 @@ ENV GOPROXY=https://proxy.golang.org
 COPY go.mod /echoserver/
 RUN go mod download
 
-COPY main.go main.go
+COPY cmd/echo-server/main.go main.go
 RUN CGO_ENABLED=0 GOOS=linux GOFLAGS=-ldflags=-w go build -o /go/bin/echo-server -ldflags=-s -v github.com/stevesloka/echo-server
 
 FROM scratch AS final
