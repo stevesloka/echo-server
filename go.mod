@@ -3,6 +3,7 @@ module github.com/stevesloka/echo-server
 go 1.13
 
 require (
+	github.com/go-bindata/go-bindata v3.1.2+incompatible // indirect
 	github.com/mjibson/esc v0.2.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/sirupsen/logrus v1.7.0

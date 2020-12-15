@@ -4,7 +4,6 @@ import (
 	"flag"
 	"fmt"
 	htmltemplate "html/template"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -21,7 +20,7 @@ var (
 )
 
 const (
-	templatesBase = "templates"
+	templatesBase = "templates/"
 )
 
 // echoInfo is used to store dynamic properties on
@@ -87,7 +86,8 @@ func serveTemplate(tmplFile string, data interface{}, w http.ResponseWriter) {
 	)
 
 	templatePath = filepath.Join(templatesBase, tmplFile)
-	templateData, err = ioutil.ReadFile(templatePath)
+
+	templateData, err = Asset(templatePath)
 
 	if err != nil {
 		log.Errorf("Failed to find template asset: %s at path: %s", tmplFile, templatePath)

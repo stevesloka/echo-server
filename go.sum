@@ -1,4 +1,7 @@
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
+github.com/go-bindata/go-bindata v1.0.0 h1:DZ34txDXWn1DyWa+vQf7V9ANc2ILTtrEjtlsdJRF26M=
+github.com/go-bindata/go-bindata v3.1.2+incompatible h1:5vjJMVhowQdPzjE1LdxyFF7YFTXg5IgGVW4gBr5IbvE=
+github.com/go-bindata/go-bindata v3.1.2+incompatible/go.mod h1:xK8Dsgwmeed+BBsSy2XTopBn/8uK2HWuGSnA11C3Joo=
 github.com/mjibson/esc v0.2.0 h1:k96hdaR9Z+nMcnDwNrOvhdBqtjyMrbVyxLpsRCdP2mA=
 github.com/mjibson/esc v0.2.0/go.mod h1:9Hw9gxxfHulMF5OJKCyhYD7PzlSdhzXyaGEBRPH1OPs=
 github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
