@@ -9,4 +9,11 @@ Simple echo server for demos
   
 ## Example
 
+Viewing in a web browser you get a clean UI to visualize the request. 
+If wanting to view via curl or a terminal, append a querystring param `?format=text` to specify a text based output.
+
+#### HTML Output
 ![example output](img/output.png)
+
+#### Text Output
+![example text output](img/output-text.png)
