@@ -1,0 +1,67 @@
+apiVersion: cert-manager.io/v1alpha3
+kind: ClusterIssuer
+metadata:
+  name: selfsigned
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: echoserver-certs
+spec:
+  dnsNames:
+  - echoserver
+  secretName: echoserver-certs
+  issuerRef:
+    name: selfsigned
+    kind: ClusterIssuer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echoserver
+spec:
+  selector:
+    matchLabels:
+      app: echoserver
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: echoserver
+    spec:
+      containers:
+        - name: echo
+          image: stevesloka/echo-server:v0.3.0
+          command: ["echo-server"]
+          args:
+            - -echotext="This is the blog site!"
+            - -cert-path=/certs/tls.crt
+            - -key-path=/certs/tls.key
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8080
+          volumeMounts:
+            - mountPath: /certs
+              name: secret-volume
+      volumes:
+      - name: secret-volume
+        secret:
+          secretName: echoserver-certs
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: echoserver
+  name: echoserver
+spec:
+  ports:
+    - port: 443
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: echoserver
+  type: ClusterIP
