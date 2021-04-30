@@ -15,6 +15,8 @@ import (
 var (
 	echoText      string
 	responseDelay time.Duration
+	certPath      string
+	keyPath       string
 	listenPort    int
 	delay         <-chan time.Time
 )
@@ -86,7 +88,6 @@ func serveTemplate(tmplFile string, data interface{}, w http.ResponseWriter) {
 	)
 
 	templatePath = filepath.Join(templatesBase, tmplFile)
-
 	templateData, err = Asset(templatePath)
 
 	if err != nil {
@@ -108,6 +109,8 @@ func serveTemplate(tmplFile string, data interface{}, w http.ResponseWriter) {
 func init() {
 	flag.StringVar(&echoText, "echotext", "", "enter text to echo back to the user")
 	flag.DurationVar(&responseDelay, "response-delay", 0, "")
+	flag.StringVar(&certPath, "cert-path", "", "")
+	flag.StringVar(&keyPath, "key-path", "", "")
 	flag.IntVar(&listenPort, "listen-port", 8080, "The port used to listen on. Defaults to 8080")
 }
 
@@ -117,6 +120,25 @@ func main() {
 
 	http.HandleFunc("/", getRequest)
 
-	fmt.Printf("Server started! Listening on port %q", fmt.Sprintf(":%d", listenPort))
-	http.ListenAndServe(fmt.Sprintf(":%d", listenPort), nil)
+	fmt.Printf("Server started! Listening on port %q. ", fmt.Sprintf(":%d", listenPort))
+
+	certExists := true
+	keyExists := true
+
+	if _, err := os.Stat(certPath); os.IsNotExist(err) {
+		certExists = false
+		fmt.Println("---err: ", err)
+	}
+	if _, err := os.Stat(keyPath); os.IsNotExist(err) {
+		keyExists = false
+		fmt.Println("---err: ", err)
+	}
+
+	if certExists && keyExists {
+		fmt.Println("Serving on HTTPS.")
+		http.ListenAndServeTLS(fmt.Sprintf(":%d", listenPort), certPath, keyPath, nil)
+	} else {
+		fmt.Println("Serving on HTTP.")
+		http.ListenAndServe(fmt.Sprintf(":%d", listenPort), nil)
+	}
 }
